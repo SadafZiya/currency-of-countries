@@ -1,0 +1,23 @@
+const Redis = require("ioredis")
+const {createRateLimitDirective, RedisStore} = require("graphql-rate-limit")
+
+const redisOptions = {
+    host: process.env.REDIS_HOST || "127.0.0.1",
+    port: parseInt(process.env.REDIS_PORT) || 4040,
+    password: process.env.REDIS_PASSWORD || "123456",
+    retryStrategy: times => {
+        return Math.min(1 * 50, 2000)
+    }
+}
+
+const redisClient = new Redis(redisOptions)
+
+const rateLimitOptions = {
+    identifyContext: (ctx) => ctx?.request?.ipAddress || ctx?.id,
+    formatError: ({fieldName}) =>
+        `Woah there, you are doing way too much ${fieldName}`,
+    store: new RedisStore(redisClient)
+}
+
+const rateLimitDirective = createRateLimitDirective(rateLimitOptions)
+module.exports = rateLimitDirective
