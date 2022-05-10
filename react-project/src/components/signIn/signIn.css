@@ -1,0 +1,24 @@
+@import '../../../node_modules/antd/dist/antd.css';
+
+.main-div-login {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.ant-card-head {
+    background: #1890ff63;
+}
+
+.ant-card-body {
+    border: 1px solid #a5d4ff;
+}
+
+.sign-in-up-card {
+    width: 450px;
+    margin: auto;
+    background: #f6f8fa;
+}
