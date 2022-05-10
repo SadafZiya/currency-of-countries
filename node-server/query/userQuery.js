@@ -1,7 +1,8 @@
 const {AuthenticationError} = require("apollo-server");
 const jwt = require('jsonwebtoken')
 const SEKRET_KEY = "anfs#@dst$*dst&twa"
-const USER_LIST = [
+const USER_LIST =
+    [
     {
         id: 1,
         email: "zia.s69@gmail.com",

@@ -31,7 +31,7 @@ const resolvers = {
             registerUser(args)
         },
         getAllUsers: async (parent, args) => getAllUser(),
-        logOut: async (parent, args, {user}) => logOutUser(user)
+        signOut: async (parent, args, {user}) => logOutUser(user)
 
     }
 }

@@ -4,7 +4,7 @@ const typeDefs = gql`
   type Query {
     getCountries(name: String): [Country]
     signUp(email:String!,password : String! , confirmPassword:String!): Boolean
-    logOut: Boolean
+    signOut: Boolean
     getAllUsers :[loginInfo]
   }
   

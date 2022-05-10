@@ -3,7 +3,10 @@ const {checkToken} = require("../query/userQuery")
 const {resolvers, typeDefs, typeDefsLogin, resolversLogin} = require('./index')
 const {makeExecutableSchema} = require('@graphql-tools/schema');
 const {rateLimitDirective} = require('graphql-rate-limit-directive');
-const {rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer} = rateLimitDirective({defaultLimit:30,defaultDuration:60});
+const {rateLimitDirectiveTypeDefs, rateLimitDirectiveTransformer} = rateLimitDirective({
+    defaultLimit: 30,
+    defaultDuration: 60
+});
 
 const createServers = (app) => {
     const serverGraphql = new ApolloServer({
@@ -17,7 +20,7 @@ const createServers = (app) => {
 
     const serverLogin = new ApolloServer({
         schema: rateLimitDirectiveTransformer(makeExecutableSchema({
-            typeDefs: [rateLimitDirectiveTypeDefs,typeDefsLogin],
+            typeDefs: [rateLimitDirectiveTypeDefs, typeDefsLogin],
             resolvers: resolversLogin,
         }))
     });
