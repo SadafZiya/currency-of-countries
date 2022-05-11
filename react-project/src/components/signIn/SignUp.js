@@ -1,14 +1,18 @@
-import './signIn.css'
+import '../../design/signIn/index.css'
 import {Card, Form, Input, Button} from 'antd';
 import {signUpService} from "../../services/serviceInfo";
+import {useState} from "react";
 
 
 const SignUp = (props) => {
     const {setIsLoginForm} = props
+    const [message, setMessage] = useState(null)
+    const [messageColor, setMessageColor] = useState('red')
 
     const onFinish = async (signUpFormData) => {
-        let result = await signUpService(signUpFormData)
-        console.log(result)
+        let signUpResult = await signUpService(signUpFormData)
+        if (signUpResult.success) setIsLoginForm(signUpFormData)
+        else setMessage(signUpResult.data)
     };
 
     const onFinishFailed = (errorInfo) => {
@@ -90,9 +94,19 @@ const SignUp = (props) => {
                         }}
                     >
                         <label>
-                            You have Account? <a href={'#'} onClick={() => setIsLoginForm(true)}>Sign In</a>
+                            You have Account? <a href={'#'} onClick={() => setIsLoginForm(null)}>Sign In</a>
                         </label>
                     </Form.Item>
+                    {message && <Form.Item
+                        wrapperCol={{
+                            offset: 5,
+                            span: 16,
+                        }}
+                    >
+                        <label style={{color: messageColor}}>
+                            {message}
+                        </label>
+                    </Form.Item>}
                 </Form>
             </Card>
         </div>

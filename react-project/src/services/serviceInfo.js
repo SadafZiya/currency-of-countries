@@ -1,4 +1,5 @@
 import {fetchDataLogin, fetchDataGraphql} from './fetchDataUils'
+import {setToken} from "../utils/localStorages";
 
 export const signInService = async ({email, password}) => {
     let data = {
@@ -17,7 +18,7 @@ export const signInService = async ({email, password}) => {
     };
     let loginInfo = await fetchDataLogin(data)
     if (loginInfo?.data?.login?.token) {
-        localStorage.setItem('TOKEN', JSON.stringify(loginInfo.data.login.token))
+        setToken(loginInfo.data.login.token)
         return {success: true, data: loginInfo.data.login}
     }
     return {success: false, data: loginInfo?.errors[0]?.message}

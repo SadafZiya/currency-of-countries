@@ -1,3 +1,5 @@
+import {getToken} from "../utils/localStorages";
+
 const BASE_URL = "http://localhost:4000/"
 const BASE_URL_GRAPHQL = BASE_URL + 'graphql'
 const BASE_URL_LOGIN = BASE_URL + 'login'
@@ -6,7 +8,7 @@ const FETCH_SETTING = {
     method: "POST",
     headers: {
         "Content-Type": "application/json",
-        "token": JSON.parse(localStorage.getItem('TOKEN'))
+        "token": getToken()
     }
 }
 
@@ -22,6 +24,6 @@ const fetchDataUils = async (baseUrl, data) => {
         ...FETCH_SETTING,
         body: JSON.stringify(data),
     }).then(res => res.json())
-      .then(result => result)
+        .then(result => result)
 }
 

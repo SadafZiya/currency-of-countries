@@ -1,11 +1,28 @@
-import './signIn.css'
 import {Card, Form, Input, Button} from 'antd';
 import {signInService} from '../../services/serviceInfo'
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import '../../design/signIn/index.css'
 
 const SignIn = (props) => {
-    const {setIsLoginForm} = props
+    const navigate = useNavigate();
+    const {setIsLoginForm, loginInfo} = props
+    const [message, setMessage] = useState(null)
+    const [messageColor, setMessageColor] = useState('red')
+
+    useEffect(() => {
+        if (loginInfo?.email) {
+            setMessage("You signed Up successfully ")
+            setMessageColor("green")
+        }
+    })
     const onFinish = async (signInFormData) => {
-        await signInService(signInFormData)
+        let signInResult = await signInService(signInFormData)
+        if (signInResult.success) navigate('/searchCountries')
+        else {
+            setMessage(signInResult.data)
+            setMessageColor('red')
+        }
     };
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -28,6 +45,7 @@ const SignIn = (props) => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
+                    initialValues={{email: loginInfo.email, password: loginInfo.password}}
                 >
                     <Form.Item
                         label="Email"
@@ -76,6 +94,16 @@ const SignIn = (props) => {
                             You are New? <a href={'#'} onClick={() => setIsLoginForm(false)}>Sign Up</a>
                         </label>
                     </Form.Item>
+                    {message && <Form.Item
+                        wrapperCol={{
+                            offset: 5,
+                            span: 16,
+                        }}
+                    >
+                        <label style={{color: messageColor}}>
+                            {message}
+                        </label>
+                    </Form.Item>}
                 </Form>
             </Card>
         </div>

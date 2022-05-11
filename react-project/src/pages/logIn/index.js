@@ -1,21 +1,26 @@
 import {useState} from "react";
-import '../../components/signIn/signIn.css'
+import '../../design/signIn/index.css'
 import SignUp from "../../components/signIn/SignUp";
 import SignIn from "../../components/signIn/SignIn";
 
 
 const LogIn = () => {
     const [isLoginForm, setIsLoginForm] = useState(true)
+    const [loginInfo, setLoginInfo] = useState({email: null, password: null})
 
+    const signeInAfterSignUp = (signUpData) => {
+        setLoginInfo(signUpData ?? loginInfo)
+        setIsLoginForm(true)
+    }
     return (
         <div className={'main-div-login'}>
             {isLoginForm ?
-                <SignIn setIsLoginForm={setIsLoginForm}/>
+                <SignIn setIsLoginForm={setIsLoginForm} loginInfo={loginInfo}/>
                 :
-                <SignUp setIsLoginForm={setIsLoginForm}/>
+                <SignUp setIsLoginForm={signeInAfterSignUp}/>
             }
         </div>
     );
 };
 
-export default LogIn ;
+export default LogIn;

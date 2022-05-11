@@ -1,9 +1,14 @@
-import {useState} from "react";
-import "./App.css";
+import {useEffect, useState} from "react";
+import {getToken} from "../../utils/localStorages";
+import {useNavigate} from "react-router-dom";
+// import "./App.css";
 
-function App() {
+function SearchCountries() {
     const [searchText, setSearchText] = useState(null);
-
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if (!getToken()) navigate('/401')
+    })
     const getCountryList = () => {
         console.log(searchText)
         let data = {
@@ -46,4 +51,4 @@ function App() {
     );
 }
 
-export default App;
+export default SearchCountries;
