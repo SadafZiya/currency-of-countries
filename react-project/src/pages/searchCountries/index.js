@@ -1,54 +1,50 @@
-import {useEffect, useState} from "react";
-import {getToken} from "../../utils/localStorages";
-import {useNavigate} from "react-router-dom";
-// import "./App.css";
+import React, { useEffect, useState, useMemo } from "react";
+import { getToken } from "../../utils/localStorages";
+import { useNavigate } from "react-router-dom";
+import { fetchCountryList } from "../../services/serviceInfo";
+import CountryList from "../../components/countries/countryList";
+import "../../design/countries/index.css";
+import { Input } from "antd";
+import Header from "../../components/header";
 
 function SearchCountries() {
-    const [searchText, setSearchText] = useState(null);
-    const navigate = useNavigate();
-    useEffect(()=>{
-        if (!getToken()) navigate('/401')
-    })
-    const getCountryList = () => {
-        console.log(searchText)
-        let data = {
-            query: `            
-              query getCountriesByName($searchText : String){
-               getCountries(name:$searchText){
-                       fullName
-                        population
-                        currencies{
-                          currency
-                          name
-                        }
-              }
-            }            
-            `,
-            variables: {
-                'searchText': searchText
-            }
-        };
-        fetch("http://localhost:4000/graphql", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data),
-        }).then(res => res.json())
-            .then(jsonRes => console.log(jsonRes));
-    };
-    return (
-        <div className="App">
-            <input
-                type={"text"}
-                value={searchText}
-                onChange={(e) => {
-                    console.log(e.target.value)
-                    setSearchText(e.target.value)
-                }}
-            />
-            <button type={"button"} onClick={getCountryList}>search</button>
+  const [searchText, setSearchText] = useState(null);
+  const [countryList, setCountryList] = useState([]);
+  const navigate = useNavigate();
 
-        </div>
-    );
+  useEffect(() => {
+    if (!getToken()) navigate("/401");
+  });
+  useMemo(async () => {
+    if (searchText == null) return;
+    let fetchDataResult = await fetchCountryList(searchText);
+    if (fetchDataResult?.success)
+      setCountryList(
+        fetchDataResult?.data.map((country) => ({
+          ...country,
+          currencies: country.currencies.map((currency) => ({
+            ...currency,
+            calculateRate: 0,
+          })),
+        }))
+      );
+  }, [searchText]);
+
+  return (
+    <div className="main-div-search-page">
+      <Header />
+      <Input
+        id="searchInput"
+        placeholder={"search country name"}
+        value={searchText}
+        onChange={(e) => {
+          setSearchText(e.target.value);
+        }}
+      />
+
+      <CountryList setCountryList={setCountryList} countryList={countryList} />
+    </div>
+  );
 }
 
 export default SearchCountries;

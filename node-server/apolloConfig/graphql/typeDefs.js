@@ -1,29 +1,28 @@
-const {gql} = require("apollo-server-express");
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type Query {
     getCountries(name: String): [Country]
-    signUp(email:String!,password : String! , confirmPassword:String!): Boolean
+    signUp(email: String!, password: String!, confirmPassword: String!): Boolean
     signOut: Boolean
-    getAllUsers :[loginInfo]
+    getAllUsers: [loginInfo]
   }
-  
-  type loginInfo{
-    token : String
-    email : String     
+
+  type loginInfo {
+    token: String
+    email: String
   }
-   
+
   type Country {
     fullName: String
     population: Int
     currencies: [Currencies]
-  } 
+  }
 
   type Currencies {
     currency: String
     name: String
-    exchangeRate:Float
+    exchangeRate: Float
   }
-   
-`
-module.exports = typeDefs
+`;
+module.exports = typeDefs;

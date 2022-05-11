@@ -1,0 +1,55 @@
+.main-div-search-page {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#countries {
+  border-collapse: collapse;
+  width: 70%;
+  margin-top: 20px;
+}
+
+#countries td,
+#countries th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#countries tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#countries tr:hover {
+  background-color: #ddd;
+}
+
+#countries th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #08afc2;
+  color: #151313;
+}
+
+#countries td tr td,
+#countries th tr th {
+  border-top: unset;
+  border-bottom: unset;
+}
+
+#countries td tr td:first-child,
+#countries th tr th:first-child {
+  border-left: unset;
+}
+
+#countries td tr td:last-child,
+#countries th tr th:last-child {
+  border-right: unset;
+}
+
+#searchInput {
+  width: 300px;
+  margin-top: 20px;
+}
